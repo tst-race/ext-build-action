@@ -17,7 +17,7 @@ on:
         type: boolean
 
 jobs:
-  build:
+  build-ext:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
