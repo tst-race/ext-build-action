@@ -1,0 +1,35 @@
+name: Build RACE External Project
+description: Use ext-builder to build an external project for RACE
+
+inputs:
+  target:
+    description: Target platform and architecture
+    required: true
+  path:
+    description: Path to project build context
+    default: .
+  cache:
+    description: Name of build cache directory
+    default: ${{ github.workspace }}/ext-cache
+  repository:
+    description: ext-builder repository
+    default: ${{ github.repository_owner }}/ext-builder
+  ref:
+    description: ext-builder tag/ref to checkout and run
+    default: initial-setup
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+        path: 'ext-builder'
+
+    - shell: bash
+      run: |
+        ./ext-builder/build.py ${{ inputs.path }} \
+          --target ${{ inputs.target }} \
+          --image ghcr.io/${{ inputs.repository }}:${{ inputs.ref }} \
+          --cache-dir ${{ inputs.cache }}
