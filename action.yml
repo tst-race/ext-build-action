@@ -28,7 +28,7 @@ runs:
         path: 'ext-builder'
 
     - uses: docker/setup-qemu-action@v2
-      if: inputs.target == "linux-arm64-v8a"
+      if: inputs.target == 'linux-arm64-v8a'
       with:
         platforms: 'arm64,arm'
 
