@@ -16,7 +16,7 @@ inputs:
     default: ${{ github.repository_owner }}/ext-builder
   ref:
     description: ext-builder tag/ref to checkout and run
-    default: initial-setup
+    default: v1
 
 runs:
   using: 'composite'
