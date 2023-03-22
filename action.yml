@@ -11,11 +11,14 @@ inputs:
   cache:
     description: Name of build cache directory
     default: ${{ github.workspace }}/ext-cache
-  repository:
+  builder-repository:
     description: ext-builder repository
     default: ${{ github.repository_owner }}/ext-builder
-  ref:
-    description: ext-builder tag/ref to checkout and run
+  builder-ref:
+    description: ext-builder repo ref to checkout
+    default: main
+  builder-tag:
+    description: ext-builder image tag to run
     default: v1
 
 runs:
@@ -23,8 +26,8 @@ runs:
   steps:
     - uses: actions/checkout@v3
       with:
-        repository: ${{ inputs.repository }}
-        ref: ${{ inputs.ref }}
+        repository: ${{ inputs.builder-repository }}
+        ref: ${{ inputs.builder-ref }}
         path: 'ext-builder'
 
     - uses: docker/setup-qemu-action@v2
@@ -36,5 +39,5 @@ runs:
       run: |
         ./ext-builder/build.py ${{ inputs.path }} \
           --target ${{ inputs.target }} \
-          --image ghcr.io/${{ inputs.repository }}:${{ inputs.ref }} \
+          --image ghcr.io/${{ inputs.builder-repository }}:${{ inputs.builder-tag }} \
           --cache-dir ${{ inputs.cache }}
